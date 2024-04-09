@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:6.0.20-alpine
+    container_name: rate_limit_redis
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel debug
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 20s
+      timeout: 5s
+      retries: 5

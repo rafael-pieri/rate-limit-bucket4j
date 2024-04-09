@@ -1,0 +1,78 @@
+bucket4j:
+  enabled: true
+  cache-to-use: redis-jedis
+  filter-method: servlet
+  filter-config-caching-enabled: true
+  filter-config-cache-name: filterConfigCache
+  filters:
+    - cache-name: buckets
+      url: ^(/v1/entries).*
+      id: getEntry
+      http-response-body: '{ "code": "APP429", "message": "The number of requests has been exceeded." }'
+      hide-http-response-headers: false
+      strategy: first
+      rate-limits:
+        - tokens-inheritance-strategy: reset
+          cache-key: '@bucket4jConfiguration.cacheKeys()["getEntry"] + "-" + @securityConfiguration.userId()'
+          execute-predicates:
+            - name: PATH=/v1/entries*
+            - name: METHOD=GET
+          bandwidths:
+            - capacity: 5
+              time: 1
+              unit: minutes
+              refill-speed: interval
+
+    - cache-name: buckets
+      url: ^(/v1/entries).*
+      id: createEntry
+      http-response-body: '{ "code": "APP429", "message": "The number of requests has been exceeded." }'
+      hide-http-response-headers: true
+      strategy: first
+      rate-limits:
+        - tokens-inheritance-strategy: reset
+          cache-key: '@bucket4jConfiguration.cacheKeys()["createEntry"] + "-" + @securityConfiguration.userId()'
+          execute-predicates:
+            - name: PATH=/v1/entries*
+            - name: METHOD=POST
+          bandwidths:
+            - capacity: 5
+              time: 1
+              unit: minutes
+              refill-speed: interval
+
+    - cache-name: buckets
+      url: ^(/v1/entries).*
+      id: updateEntry
+      http-response-body: '{ "code": "APP429", "message": "The number of requests has been exceeded." }'
+      hide-http-response-headers: true
+      strategy: first
+      rate-limits:
+        - tokens-inheritance-strategy: reset
+          cache-key: '@bucket4jConfiguration.cacheKeys()["updateEntry"] + "-" + @securityConfiguration.userId()'
+          execute-predicates:
+            - name: PATH=/v1/entries*
+            - name: METHOD=PUT
+          bandwidths:
+            - capacity: 5
+              time: 1
+              unit: minutes
+              refill-speed: interval
+
+    - cache-name: buckets
+      url: ^(/v1/entries).*
+      id: deleteEntry
+      http-response-body: '{ "code": "APP429", "message": "The number of requests has been exceeded." }'
+      hide-http-response-headers: true
+      strategy: first
+      rate-limits:
+        - tokens-inheritance-strategy: reset
+          cache-key: '@bucket4jConfiguration.cacheKeys()["deleteEntry"] + "-" + @securityConfiguration.userId()'
+          execute-predicates:
+            - name: PATH=/v1/entries*
+            - name: METHOD=DELETE
+          bandwidths:
+            - capacity: 5
+              time: 1
+              unit: minutes
+              refill-speed: interval

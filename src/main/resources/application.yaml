@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: rate-limit-bucket4j
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  config:
+    import:
+      - classpath:bucket4j.yaml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
