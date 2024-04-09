@@ -13,7 +13,7 @@ bucket4j:
       strategy: first
       rate-limits:
         - tokens-inheritance-strategy: reset
-          cache-key: '@bucket4jConfiguration.cacheKeys()["getEntry"] + "-" + @securityConfiguration.userId()'
+          cache-key: '"GET-" + @securityConfiguration.userId()'
           execute-predicates:
             - name: PATH=/v1/entries*
             - name: METHOD=GET
@@ -31,7 +31,7 @@ bucket4j:
       strategy: first
       rate-limits:
         - tokens-inheritance-strategy: reset
-          cache-key: '@bucket4jConfiguration.cacheKeys()["createEntry"] + "-" + @securityConfiguration.userId()'
+          cache-key: '"POST-" + @securityConfiguration.userId()'
           execute-predicates:
             - name: PATH=/v1/entries*
             - name: METHOD=POST
@@ -49,7 +49,7 @@ bucket4j:
       strategy: first
       rate-limits:
         - tokens-inheritance-strategy: reset
-          cache-key: '@bucket4jConfiguration.cacheKeys()["updateEntry"] + "-" + @securityConfiguration.userId()'
+          cache-key: '"PUT-" + @securityConfiguration.userId()'
           execute-predicates:
             - name: PATH=/v1/entries*
             - name: METHOD=PUT
@@ -67,7 +67,7 @@ bucket4j:
       strategy: first
       rate-limits:
         - tokens-inheritance-strategy: reset
-          cache-key: '@bucket4jConfiguration.cacheKeys()["deleteEntry"] + "-" + @securityConfiguration.userId()'
+          cache-key: '"DELETE-" + @securityConfiguration.userId()'
           execute-predicates:
             - name: PATH=/v1/entries*
             - name: METHOD=DELETE
